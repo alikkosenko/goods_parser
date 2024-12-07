@@ -1,0 +1,242 @@
+{
+    "0": {
+        "name": "Сир плавлений «Весела корівка» вершковий 38%",
+        "link": "https://shop.silpo.ua/product/syr-plavlenyi-vesela-korivka-vershkovyi-38-862284",
+        "price": 13.49,
+        "old_price": 18.99,
+        "profit": 28,
+        "weight": "70г"
+    },
+    "1": {
+        "name": "Сир плавлений «Весела корівка» «Дружба» 38%",
+        "link": "https://shop.silpo.ua/product/syr-plavlenyi-vesela-korivka-druzhba-38-862285",
+        "price": 13.49,
+        "old_price": 18.99,
+        "profit": 28,
+        "weight": "70г"
+    },
+    "2": {
+        "name": "Сир «Ферма» «Моцарелла» 45%",
+        "link": "https://shop.silpo.ua/product/syr-ferma-motsarella-45-817041",
+        "price": 61.99,
+        "old_price": null,
+        "profit": null,
+        "weight": "200г"
+    },
+    "3": {
+        "name": "Сир «Ферма» «Сулугуні» 45%",
+        "link": "https://shop.silpo.ua/product/syr-ferma-suluguni-45-817040",
+        "price": 61.99,
+        "old_price": null,
+        "profit": null,
+        "weight": "200г"
+    },
+    "4": {
+        "name": "Шоколад молочний Milka зі смаком малини",
+        "link": "https://shop.silpo.ua/product/shokolad-molochnyi-milka-zi-smakom-malyny-911053",
+        "price": 43.19,
+        "old_price": null,
+        "profit": null,
+        "weight": "100г"
+    },
+    "5": {
+        "name": "Йогурт «Растишка» персик-абрикос питний 1,5%",
+        "link": "https://shop.silpo.ua/product/yogurt-rastyshka-persyk-abrykos-pytnyi-1-5-907250",
+        "price": 20.99,
+        "old_price": null,
+        "profit": null,
+        "weight": "207г"
+    },
+    "6": {
+        "name": "Шоколад молочний Milka зі смаком ванілі та Oreo",
+        "link": "https://shop.silpo.ua/product/shokolad-molochnyi-milka-zi-smakom-vanili-ta-oreo-895464",
+        "price": 45.99,
+        "old_price": null,
+        "profit": null,
+        "weight": "100г"
+    },
+    "7": {
+        "name": "Дорадо охолоджена 300-600",
+        "link": "https://shop.silpo.ua/product/dorado-okholodzhena-300-600-733378",
+        "price": 25.39,
+        "old_price": 29.9,
+        "profit": 15,
+        "weight": "100г"
+    },
+    "8": {
+        "name": "Пельмені «Геркулес» «Фірмові»",
+        "link": "https://shop.silpo.ua/product/pelmeni-gerkules-firmovi-4728",
+        "price": 97.99,
+        "old_price": null,
+        "profit": null,
+        "weight": "400г"
+    },
+    "9": {
+        "name": "Вино ігристе I Castelli Prosecco DOC spumante Rose",
+        "link": "https://shop.silpo.ua/product/vyno-igryste-i-castelli-prosecco-doc-spumante-rose-839849",
+        "price": 299.0,
+        "old_price": null,
+        "profit": null,
+        "weight": "0,75л"
+    },
+    "10": {
+        "name": "Йогурт Дольче Lactel персик 2,5%",
+        "link": "https://shop.silpo.ua/product/yogurt-dolche-lactel-persyk-2-5-655891",
+        "price": 26.49,
+        "old_price": null,
+        "profit": null,
+        "weight": "290г"
+    },
+    "11": {
+        "name": "Вино Peter Weinbach Riesling Medium Dry Landwein Rhein",
+        "link": "https://shop.silpo.ua/product/vyno-peter-weinbach-riesling-medium-dry-landwein-rhein-792772",
+        "price": 151.98,
+        "old_price": null,
+        "profit": null,
+        "weight": "0,75л"
+    },
+    "12": {
+        "name": "Йогурт «Растишка» банан питний 1,5%",
+        "link": "https://shop.silpo.ua/product/yogurt-rastyshka-banan-pytnyi-1-5-907248",
+        "price": 20.99,
+        "old_price": null,
+        "profit": null,
+        "weight": "207г"
+    },
+    "13": {
+        "name": "Станок Gillette",
+        "link": "https://shop.silpo.ua/product/stanok-gillette-39534",
+        "price": 59.5,
+        "old_price": 74.99,
+        "profit": 20,
+        "weight": "5шт"
+    },
+    "14": {
+        "name": "Кава Carte Noire Original натуральна розчинна сублімована",
+        "link": "https://shop.silpo.ua/product/kava-carte-noire-original-naturalna-rozchynna-sublimovana-597836",
+        "price": 119.0,
+        "old_price": 174.0,
+        "profit": 31,
+        "weight": "70г"
+    },
+    "15": {
+        "name": "Кава розчинна Carte Noire натуральна сублімована",
+        "link": "https://shop.silpo.ua/product/kava-rozchynna-carte-noire-naturalna-sublimovana-783913",
+        "price": 234.0,
+        "old_price": 294.0,
+        "profit": 20,
+        "weight": "140г"
+    },
+    "16": {
+        "name": "Кава зерно Jacobs Monarch",
+        "link": "https://shop.silpo.ua/product/kava-zerno-jacobs-monarch-73849",
+        "price": 114.9,
+        "old_price": 169.0,
+        "profit": 32,
+        "weight": "250г"
+    },
+    "17": {
+        "name": "Підгузки Pampers Premium Care Newborn 2-5 кг",
+        "link": "https://shop.silpo.ua/product/pidguzky-pampers-premium-care-newborn-2-5-kg-782958",
+        "price": 239.99,
+        "old_price": 284.0,
+        "profit": 15,
+        "weight": "26шт"
+    },
+    "18": {
+        "name": "Сібас (лаврак) охолоджений 300-600",
+        "link": "https://shop.silpo.ua/product/sibas-lavrak-okholodzhenyi-300-600-733377",
+        "price": 30.49,
+        "old_price": 35.9,
+        "profit": 15,
+        "weight": "100г"
+    },
+    "19": {
+        "name": "Підгузки Pampers Premium Care Maxi VP",
+        "link": "https://shop.silpo.ua/product/pidguzky-pampers-premium-care-maxi-vp-445490",
+        "price": 613.9,
+        "old_price": 819.0,
+        "profit": 25,
+        "weight": "52шт/уп"
+    },
+    "20": {
+        "name": "Кава мелена Jacobs Espresso Classico в капсулах",
+        "link": "https://shop.silpo.ua/product/kava-melena-jacobs-espresso-classico-v-kapsulakh-914989",
+        "price": 89.0,
+        "old_price": 134.0,
+        "profit": 33,
+        "weight": "52г"
+    },
+    "21": {
+        "name": "Кава мелена Jacobs Espresso Intenso в капсулах",
+        "link": "https://shop.silpo.ua/product/kava-melena-jacobs-espresso-intenso-v-kapsulakh-914990",
+        "price": 89.0,
+        "old_price": 134.0,
+        "profit": 33,
+        "weight": "52г"
+    },
+    "22": {
+        "name": "Морозиво «Рудь» чорниця-ожина",
+        "link": "https://shop.silpo.ua/product/morozyvo-rud-chornytsia-ozhyna-906005",
+        "price": 90.9,
+        "old_price": 116.0,
+        "profit": 21,
+        "weight": "500г"
+    },
+    "23": {
+        "name": "Кава зернова Piazza D'Oro Doro Forza",
+        "link": "https://shop.silpo.ua/product/kava-zernova-piazza-d-oro-doro-forza-816107",
+        "price": 799.0,
+        "old_price": 1199.0,
+        "profit": 33,
+        "weight": "1000г"
+    },
+    "24": {
+        "name": "Вареники «Геркулес» з сиром",
+        "link": "https://shop.silpo.ua/product/varenyky-gerkules-z-syrom-4753",
+        "price": 78.49,
+        "old_price": null,
+        "profit": null,
+        "weight": "400г"
+    },
+    "25": {
+        "name": "Морозиво «Хрещатик» «Київський торт» 15%",
+        "link": "https://shop.silpo.ua/product/morozyvo-khreshchatyk-kyivskyi-tort-15-871961",
+        "price": 130.5,
+        "old_price": 204.0,
+        "profit": 36,
+        "weight": "500г"
+    },
+    "26": {
+        "name": "Вино червоне сухе M.Chapoutier Marius Grenache-Syrah Pays d'Oc",
+        "link": "https://shop.silpo.ua/product/vyno-chervone-sukhe-m-chapoutier-marius-grenache-syrah-pays-d-oc-679781",
+        "price": 284.58,
+        "old_price": null,
+        "profit": null,
+        "weight": "0,75л"
+    },
+    "27": {
+        "name": "Станок для гоління Gillette 2 одноразовий",
+        "link": "https://shop.silpo.ua/product/stanok-dlia-golinnia-gillette-2-odnorazovyi-391453",
+        "price": 83.9,
+        "old_price": 99.0,
+        "profit": 15,
+        "weight": "10шт/уп"
+    },
+    "28": {
+        "name": "Підгузки Pampers Premium Care Midi VP",
+        "link": "https://shop.silpo.ua/product/pidguzky-pampers-premium-care-midi-vp-445487",
+        "price": 613.9,
+        "old_price": 819.0,
+        "profit": 25,
+        "weight": "60шт/уп"
+    },
+    "29": {
+        "name": "Вино ігристе Canella Prosecco Rose",
+        "link": "https://shop.silpo.ua/product/vyno-igryste-canella-prosecco-rose-852548",
+        "price": 429.0,
+        "old_price": null,
+        "profit": null,
+        "weight": "0,75л"
+    }
+}
