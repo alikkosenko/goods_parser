@@ -11,6 +11,7 @@ from time import sleep, time
 from bs4 import BeautifulSoup
 # Selenium
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -29,8 +30,9 @@ def create_webdriver():
     # настройка драйвера Chrome
     options = Options()
     options.add_argument("--window-size=1440,900")
-    #options.headless = config.HEADLESS
-    driver = webdriver.Chrome(options=options) # создания драйвера Chrome
+    options.headless = config.HEADLESS
+    service = Service("/usr/bin/chromedriver")
+    driver = webdriver.Chrome(options=options, service=service) # создания драйвера Chrome
     driver.implicitly_wait(20)
     return driver # возвращает экземпляр webdriver
 
@@ -46,7 +48,7 @@ class GoodsParser:
 
     def create_products_dict(self) -> None:
         soup = BeautifulSoup(self._driver.page_source, 'html.parser')
-        products = soup.find_all(class_='new-product-list-item')
+        products = soup.find_all(class_='product-card')
 
         logging.info("[+] We've got {} products".format(len(products)))
 
@@ -54,25 +56,27 @@ class GoodsParser:
 
         for product in products:
 
-            name = product.find(class_="product-title").text
+            name = product.find(class_="product-card__title").text
 
             try:
-                price = float(product.find(class_="current-integer").text[:-4])
+                price = float(product.find(class_="ft-whitespace-nowrap ft-text-22 ft-font-bold").text[:-4])
             except AttributeError:
                 price = None
 
             try:
-                old_price = float(product.find(class_="old-integer").text)
+                old_price = float(product.find(class_="ft-line-through ft-text-black-87 ft-typo-14-regular xl:ft-typo").text[:-4])
                 profit = int(100 - price * 100 / old_price)
             except AttributeError:
                 old_price = None
                 profit = None
 
-            weight = product.find(class_="product-weight").text
-            link = product.find(class_="product-list-item__content")["href"]
+            weight = product.find(class_="ft-typo-14-semibold xl:ft-typo-16-semibold").text
+            link = product["href"]
+            picture = product.find("img")['src']
 
             self.products_dict[good_id] = dict(name=str(name),
                                                link="https://shop.silpo.ua" + link,
+                                               picture=picture,
                                                price=price,
                                                old_price=old_price,
                                                profit=profit,
@@ -149,6 +153,7 @@ if __name__ == "__main__":
 
     parser = GoodsParser()
     parser.parse_products_info(stocks_url)
+    parser.create_products_dict()
     parser.save_to_file()
 
     end = time()
