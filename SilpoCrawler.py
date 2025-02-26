@@ -32,7 +32,7 @@ def create_webdriver():
     logging.info('Creating webdriver')
     # настройка драйвера Chrome
     options = Options()
-    options.add_argument("--window-size=1440,900")
+    options.add_argument("--window-size=1440,1500")
     options.add_argument("--headless")
     service = webdriver.ChromeService(executable_path=binary_path)
     driver = webdriver.Chrome(options=options, service=service) # создания драйвера Chrome
@@ -40,14 +40,14 @@ def create_webdriver():
     return driver # возвращает экземпляр webdriver
 
 
-class GoodsParser:
+class SilpoCrawler:
 
     def __init__(self, delay=2, scroll_delay=0.2) -> None:
 
-        self.products_dict = dict()         # Словарь со всеми найденными товарами
-        self.delay = delay                  # Задержка перед началом парсинга
-        self.scroll_delay = scroll_delay    # Задержка при скроллинге страницы
-        self._driver = None                 # Драйвер браузера
+        self.products_dict = dict()         # Disctionary for goods
+        self.delay = delay                  # Delay before parsing start
+        self.scroll_delay = scroll_delay
+        self._driver = None                 # Browser driver
 
     def create_products_dict(self) -> None:
         soup = BeautifulSoup(self._driver.page_source, 'html.parser')
@@ -116,7 +116,7 @@ class GoodsParser:
 
         logging.info("Site source code is ready")
 
-    def parse_product_picture_url(self, URL) -> str:
+    def parse_product_picture_url(self, URL:str) -> str:
         self._driver.get(URL)
         sleep(1)
         soup = BeautifulSoup(self._driver.page_source, 'html.parser')
@@ -154,9 +154,10 @@ class GoodsParser:
 if __name__ == "__main__":
     start = time()
 
-    parser = GoodsParser()
+    parser = SilpoCrawler()
     parser.parse_products_info(stocks_url)
     parser.create_products_dict()
+    parser.sort()
     parser.save_to_file()
 
     end = time()

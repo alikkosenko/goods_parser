@@ -5,7 +5,7 @@ SilpoParser
 '''
 
 import logging
-from GoodsParser import GoodsParser, stocks_url
+from SilpoCrawler import SilpoCrawler, stocks_url
 
 goods_info_dict = {
     "beer": {"units-postfix": "л"}
@@ -16,7 +16,7 @@ beer_url = "https://shop.silpo.ua/all-offers?filter_CATEGORY=(38)&to=3&from=1"
 
 
 if __name__ == "__main__":
-    parser = GoodsParser(delay=10)
+    parser = SilpoCrawler(delay=10)
     while True:
         print("Выбери действие:\n 0 - ВЫХОД\n 1 - Обновить базу данных\n 2 - Вывести базу данных")
         action_num = int(input("Действие:"))

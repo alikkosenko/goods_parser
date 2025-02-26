@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 
 import telebot
-from GoodsParser import GoodsParser
+from SilpoCrawler import SilpoCrawler
 import config
 
 bot = telebot.TeleBot(config.BOT_TOKEN)
 
-parser = GoodsParser()
+parser = SilpoCrawler()
+parser.parse_products_info("https://silpo.ua/category/pyvo-4503?sortBy=promotion&sortDirection=desc")
+parser.create_products_dict()
+parser.save_to_file()
 
 
 @bot.message_handler(commands=['start', 'hello'])
@@ -18,7 +21,7 @@ def send_welcome(message):
 @bot.message_handler(commands=['beer'])
 def send_beer(message):
     parser.retrieve("beer_parse.json")
-    for good in parser.products_dict.items():
+    for good in sorted(parser.products_dict.items()):
         bot.send_message(message.chat.id, str(good))
 
 
