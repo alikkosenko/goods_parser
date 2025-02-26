@@ -3,8 +3,11 @@
 import telebot
 from SilpoCrawler import SilpoCrawler
 import config
+import os 
 
-bot = telebot.TeleBot(config.BOT_TOKEN)
+token = os.getenv("tgbotapikey")
+
+bot = telebot.TeleBot(token)
 
 parser = SilpoCrawler()
 parser.parse_products_info("https://silpo.ua/category/pyvo-4503?sortBy=promotion&sortDirection=desc")
