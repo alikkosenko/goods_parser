@@ -17,6 +17,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+
+from chromedriver_py import binary_path
+
 # Настройка logging
 logging.basicConfig(format='[+]%(asctime)s - %(message)s', level=logging.INFO)
 logging.basicConfig(format='[!]%(asctime)s - %(message)s', level=logging.WARNING)
@@ -30,8 +33,8 @@ def create_webdriver():
     # настройка драйвера Chrome
     options = Options()
     options.add_argument("--window-size=1440,900")
-    options.headless = config.HEADLESS
-    service = Service("/usr/bin/chromedriver")
+    options.add_argument("--headless")
+    service = webdriver.ChromeService(executable_path=binary_path)
     driver = webdriver.Chrome(options=options, service=service) # создания драйвера Chrome
     driver.implicitly_wait(20)
     return driver # возвращает экземпляр webdriver
@@ -59,12 +62,12 @@ class GoodsParser:
             name = product.find(class_="product-card__title").text
 
             try:
-                price = float(product.find(class_="ft-whitespace-nowrap ft-text-22 ft-font-bold").text[:-4])
+                price = float(product.find(class_="product-card-price__displayPrice").text[:-4])
             except AttributeError:
                 price = None
 
             try:
-                old_price = float(product.find(class_="ft-line-through ft-text-black-87 ft-typo-14-regular xl:ft-typo").text[:-4])
+                old_price = float(product.find(class_="product-card-price__displayOldPrice").text[:-4])
                 profit = int(100 - price * 100 / old_price)
             except AttributeError:
                 old_price = None
