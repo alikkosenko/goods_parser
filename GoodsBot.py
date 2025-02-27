@@ -3,16 +3,10 @@
 import telebot
 from SilpoCrawler import SilpoCrawler
 import config
-import os 
 
-token = os.getenv("tgbotapikey")
+bot = telebot.TeleBot(config.BOT_TOKEN)
 
-bot = telebot.TeleBot(token)
-
-parser = SilpoCrawler()
-parser.parse_products_info("https://silpo.ua/category/pyvo-4503?sortBy=promotion&sortDirection=desc")
-parser.create_products_dict()
-parser.save_to_file()
+bot = telebot.TeleBot()
 
 
 @bot.message_handler(commands=['start', 'hello'])
@@ -23,9 +17,10 @@ def send_welcome(message):
 
 @bot.message_handler(commands=['beer'])
 def send_beer(message):
-    parser.retrieve("beer_parse.json")
-    for good in sorted(parser.products_dict.items()):
-        bot.send_message(message.chat.id, str(good))
+    items = DBCursor().receive_products()
+    items.sort(key=lambda p: p.profit if p.profit is not None else 0, reverse=True)
+    for item in items[:5]:
+        bot.send_message(message.chat.id, item)
 
 
 @bot.message_handler(func=lambda msg: True)
