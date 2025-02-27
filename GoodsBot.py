@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
+import os
 
 import telebot
 from SilpoCrawler import SilpoCrawler
+from DBCursor import DBCursor
 import config
 
-bot = telebot.TeleBot(config.BOT_TOKEN)
-
-bot = telebot.TeleBot()
+bot = telebot.TeleBot(os.getenv("tgbotapi"))
 
 
 @bot.message_handler(commands=['start', 'hello'])
