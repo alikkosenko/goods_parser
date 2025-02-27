@@ -7,7 +7,6 @@ import os
 from dataclasses import asdict
 from time import sleep, time
 
-from ansible_collections.community.general.plugins.module_utils.net_tools.pritunl.api import pritunl_auth_request
 # Бибилиотека bs4
 from bs4 import BeautifulSoup
 # my own modules
