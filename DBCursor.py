@@ -5,26 +5,6 @@ import sqlite3
 from config import Product
 
 
-'''
-cursor.execute(
-    """
-        CREATE TABLE Products(
-            product_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            product_type VARCHAR,
-            name VARCHAR,
-            price FLOAT,
-            old_price FLOAT,
-            profit INTEGER,
-            weight VARCHAR,
-            lnk VARCHAR,
-            picture_lnk VARCHAR
-        )
-    """
-)
-
-conn.commit()
-
-'''
 
 
 class DBCursor:
@@ -32,6 +12,25 @@ class DBCursor:
     def __init__(self):
         self.conn = sqlite3.connect("products.db")
         self.cursor = self.conn.cursor()
+
+    def create_db(self):
+        self.cursor.execute(
+        """
+            CREATE TABLE Products(
+                product_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                product_type VARCHAR,
+                name VARCHAR,
+                price FLOAT,
+                old_price FLOAT,
+                profit INTEGER,
+                weight VARCHAR,
+                lnk VARCHAR,
+                picture_lnk VARCHAR
+            )
+        """
+        )
+
+        self.conn.commit()
 
     def receive_products(self):
         self.cursor.execute('''

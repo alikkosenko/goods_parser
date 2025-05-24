@@ -20,7 +20,8 @@ def create_webdriver():
     logging.info('Creating webdriver')
     options = Options() # Settings for Chromedriver
     options.add_argument("--window-size=1440,1500")
-    #options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--headless")
     service = webdriver.ChromeService(executable_path=binary_path)
     driver = webdriver.Chrome(options=options, service=service) # создания драйвера Chrome
     driver.implicitly_wait(20)
