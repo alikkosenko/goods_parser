@@ -11,6 +11,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 # chromedriver_py
 from chromedriver_py import binary_path
+import undetected_chromedriver as uc
 
 
 logging.basicConfig(format='[+]%(asctime)s - %(message)s', level=logging.INFO)
@@ -18,11 +19,15 @@ logging.basicConfig(format='[+]%(asctime)s - %(message)s', level=logging.INFO)
 
 def create_webdriver():
     logging.info('Creating webdriver')
-    options = Options() # Settings for Chromedriver
-    options.add_argument("--window-size=1440,1500")
+    #options = Options() # Settings for Chromedriver
+    #options.add_argument("--headless")
+
+    options = uc.ChromeOptions()
     options.add_argument("--no-sandbox")
-    options.add_argument("--headless")
+    options.add_argument("--window-size=1440,1500")
+    options.add_argument("--disable-blink-features=AutomationControlled")
+
     service = webdriver.ChromeService(executable_path=binary_path)
-    driver = webdriver.Chrome(options=options, service=service) # создания драйвера Chrome
+    driver = uc.Chrome(options=options,service=service)# создания драйвера Chrome
     driver.implicitly_wait(20)
     return driver

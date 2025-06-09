@@ -10,7 +10,6 @@ class Shop:
 
 @dataclass
 class Product:
-    product_id : int
     product_type: str
     name: str
     price: float

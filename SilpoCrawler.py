@@ -6,6 +6,7 @@ import json
 import os
 from dataclasses import asdict
 from time import sleep, time
+import re
 
 # Бибилиотека bs4
 from bs4 import BeautifulSoup
@@ -20,7 +21,6 @@ from selenium.webdriver.common.by import By
 # Настройка logging
 logging.basicConfig(format='[+]%(asctime)s - %(message)s', level=logging.INFO)
 logging.basicConfig(format='[!]%(asctime)s - %(message)s', level=logging.WARNING)
-
 
 stocks_url = "https://shop.silpo.ua/all-offers?to=1&from=1"
 
@@ -60,14 +60,14 @@ class SilpoCrawler(ProductParser):
             picture_lnk = product.find("img")['src']
 
             self.products_list.append(Product(
-                product_type = product_category,
-                name         = str(name),
-                lnk          = self.shop_lnk + lnk,
-                picture_lnk  = picture_lnk,
-                price        = price,
-                old_price    = old_price,
-                profit       = profit,
-                weight       = weight
+                product_type=product_category,
+                name=str(name),
+                lnk=self.shop_lnk + lnk,
+                picture_lnk=picture_lnk,
+                price=price,
+                old_price=old_price,
+                profit=profit,
+                weight=weight
             )
             )
 
@@ -94,7 +94,6 @@ class SilpoCrawler(ProductParser):
 
         self.fill_products_list(product_category=cat_lnk)
 
-        
     def parse_category(self, cat_lnk) -> None:
         self._driver.get(cat_lnk)
         soup = BeautifulSoup(self._driver.page_source, 'html.parser')
@@ -102,10 +101,9 @@ class SilpoCrawler(ProductParser):
             num_pages = int(soup.find(class_="pagination-item ng-star-inserted").text)
         except Exception:
             num_pages = 5
-        for page in range(2) if num_pages > 5 else range(1): # number of pages to parse
+        for page in range(num_pages):  # number of pages to parse
             self.parse_page(cat_lnk + "?page={}".format(page + 1))
         self.save_to_db()
-                
 
     def save_to_file(self, filename="parse.json") -> None:
         if self.products_list:
@@ -126,8 +124,10 @@ class SilpoCrawler(ProductParser):
                     self.products_list.append(Product(**data))
 
     def save_to_db(self) -> None:
+        print(self.products_list)
+        cursor = DBCursor.DBCursor()
         for product in self.products_list:
-            DBCursor.append_product(product)
+            cursor.append_product(product)
 
     def parse_categories(self):
         self._driver.get(self.shop_lnk)
@@ -140,19 +140,16 @@ class SilpoCrawler(ProductParser):
             id = 0
             self.categories_list.append(
                 ProductCategory(
-                    cat_id  = id,
-                    cat_lnk = self.shop_lnk + category["href"]
+                    cat_id=id,
+                    cat_lnk=self.shop_lnk + category["href"]
                 )
             )
             id += 1
-
-
 
     def parse(self) -> None:
         self.parse_categories()
         for category in self.categories_list:
             self.parse_category(category.cat_lnk)
-
 
 
 if __name__ == "__main__":

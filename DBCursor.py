@@ -3,20 +3,19 @@
 import sqlite3
 
 from config import Product
-
-
+import re
 
 
 class DBCursor:
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.conn = sqlite3.connect("products.db")
         self.cursor = self.conn.cursor()
 
-    def create_db(self):
+    def create_table(self, table_name="Products") -> None:
         self.cursor.execute(
-        """
-            CREATE TABLE Products(
+            """
+            CREATE TABLE {}(
                 product_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 product_type VARCHAR,
                 name VARCHAR,
@@ -27,21 +26,21 @@ class DBCursor:
                 lnk VARCHAR,
                 picture_lnk VARCHAR
             )
-        """
+        """.format(table_name)
         )
 
         self.conn.commit()
 
-    def receive_products(self):
-        self.cursor.execute('''
-            SELECT * FROM Products WHERE product_type == ?;
-        ''', ("https://silpo.ua/category/pyvo-4503?page=1",))
+    def receive_products(self, table_name, product_type=None) -> list[Product]:
+        self.cursor.execute(f'''
+            SELECT * FROM {table_name} WHERE product_type == {product_type};
+        ''' if product_type else f'''SELECT * FROM {table_name};''')
         data = self.cursor.fetchall()
-        products = [Product(*item) for item in data]
+        products = [Product(*item[1:]) for item in data]
         return products
 
-    def append_product(self, product):
-        self.cursor.execute('''INSERT INTO Products( 
+    def append_product(self, table_name, product):
+        self.cursor.execute('''INSERT INTO {}( 
                     product_type, 
                     name, 
                     price, 
@@ -54,10 +53,12 @@ class DBCursor:
                     VALUES 
                     (
                     ?,?,?,?,?,?,?,?
-                    )''', tuple(product.__dict__.values()))
+                    )'''.format(table_name), tuple(product.__dict__.values()))
         self.conn.commit()
 
 
-
-#if __name__ == "__main__":
-    #receive_products()
+if __name__ == "__main__":
+    conn = DBCursor()
+    p = re.compile("^\n+|\n+$")
+    for i in conn.receive_products(table_name="Atb_table"):
+        print(re.sub(r"^\n+|\n+$|\n+Закінчується", "", i.name))
