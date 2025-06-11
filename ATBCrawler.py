@@ -25,6 +25,12 @@ class ATBCrawler(ProductParser):
         self._driver = create_webdriver()
         self.table_name = "Atb_table"
 
+    def save_to_db(self) -> None:
+        print(self.products_list)
+        cursor = DBCursor.DBCursor()
+        for product in self.products_list:
+            cursor.append_product(self.table_name, product)
+
     def fill_products_list(self, product_category) -> None:
         soup = BeautifulSoup(self._driver.page_source, 'html.parser')
         products = soup.find_all("article", class_=["catalog-item", "js-product-container"])
@@ -106,29 +112,6 @@ class ATBCrawler(ProductParser):
             self.parse_page(cat_lnk + "?page={}".format(page + 1))
         self.save_to_db()
 
-    def save_to_file(self, filename="parse.json") -> None:
-        if self.products_list:
-            for product in self.products_list:
-                with open(filename, "a+", encoding="UTF-8") as f:
-                    json.dump(asdict(product), f, indent=4, ensure_ascii=False)
-            logging.info("Saved products dictionary to {}".format(filename))
-        else:
-            logging.warning("Nothing to save to {}".format(filename))
-
-        self.products_list.clear()
-
-    def retrieve(self, filename="parse.json") -> None:
-        for filename in list(os.listdir()):
-            if filename[-4:] == "json":
-                with open(filename, "r", encoding="UTF-8") as f:
-                    data = json.load(f)
-                    self.products_list.append(Product(**data))
-
-    def save_to_db(self) -> None:
-        print(self.products_list)
-        cursor = DBCursor.DBCursor()
-        for product in self.products_list:
-            cursor.append_product(self.table_name, product)
 
     def parse_categories(self):
         self._driver.get(self.shop_lnk)

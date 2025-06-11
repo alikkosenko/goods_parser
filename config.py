@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-HEADLESS = True
+HEADLESS = False
 
 @dataclass
 class Shop:
@@ -23,3 +23,4 @@ class Product:
 class ProductCategory:
     cat_id: int
     cat_lnk: str
+

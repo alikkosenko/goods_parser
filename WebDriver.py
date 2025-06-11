@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-'''
+"""
 WebDriver: simple class for webdriver
-'''
+"""
 
 import logging
 
@@ -13,17 +13,18 @@ from selenium.webdriver.chrome.options import Options
 from chromedriver_py import binary_path
 import undetected_chromedriver as uc
 
+import config
 
 logging.basicConfig(format='[+]%(asctime)s - %(message)s', level=logging.INFO)
 
 
 def create_webdriver():
     logging.info('Creating webdriver')
-    #options = Options() # Settings for Chromedriver
-    #options.add_argument("--headless")
 
     options = uc.ChromeOptions()
     options.add_argument("--no-sandbox")
+    if config.HEADLESS:
+        options.add_argument("--headless")
     options.add_argument("--window-size=1440,1500")
     options.add_argument("--disable-blink-features=AutomationControlled")
 

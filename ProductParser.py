@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-'''
+"""
 Goods Parser: parent class for every parser
-'''
+"""
 
 
 class ProductParser:
@@ -12,13 +12,10 @@ class ProductParser:
         self.delay = delay
         self.scroll_delay = scroll_delay
 
-    def fill_products_list(self, product_category:str) -> None:
-       pass
-
-    def save_to_db(self) -> None:
+    def fill_products_list(self, product_category: str) -> None:
         pass
 
-    def retrieve_from_db(self) -> None:
+    def save_to_db(self) -> None:
         pass
 
     def sort(self) -> None:
