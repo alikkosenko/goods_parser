@@ -6,6 +6,8 @@ from time import sleep, time
 
 # Бибилиотека bs4
 from bs4 import BeautifulSoup
+
+import config
 # my own modules
 from config import Product, ProductCategory
 from ProductParser import ProductParser
@@ -20,7 +22,8 @@ economy_link = "https://www.atbmarket.com/catalog/388-aktsiya-7-dniv"
 class ATBCrawler(ProductParser):
     def __init__(self, delay=2, scroll_delay=0.2) -> None:
         super().__init__(delay, scroll_delay)
-        self.shop_lnk = "https://www.atbmarket.com/"
+        self.name = "ATB"
+        self.shop_lnk = config.shops[self.name]
         self.categories_list = list()
         self._driver = create_webdriver()
         self.table_name = "Atb_table"
@@ -30,6 +33,7 @@ class ATBCrawler(ProductParser):
         cursor = DBCursor.DBCursor()
         for product in self.products_list:
             cursor.append_product(self.table_name, product)
+        self.products_list.clear()
 
     def fill_products_list(self, product_category) -> None:
         soup = BeautifulSoup(self._driver.page_source, 'html.parser')
@@ -53,7 +57,6 @@ class ATBCrawler(ProductParser):
                 old_price = None
                 profit = None
 
-            weight = "грн/шт"
             lnk = product.find(class_="catalog-item__photo-link")['href']
             picture_lnk = lnk
 
@@ -65,7 +68,6 @@ class ATBCrawler(ProductParser):
                 price=price,
                 old_price=old_price,
                 profit=profit,
-                weight=weight
             )
             )
 
@@ -91,6 +93,7 @@ class ATBCrawler(ProductParser):
         logging.info("Page source code is ready")
 
         self.fill_products_list(product_category=cat_lnk)
+        self.save_to_db()
 
     def parse_category(self, cat_lnk) -> None:
         self._driver.get(cat_lnk)
@@ -110,8 +113,6 @@ class ATBCrawler(ProductParser):
         for page in range(num_pages):  # number of pages to parse
             print(num_pages)
             self.parse_page(cat_lnk + "?page={}".format(page + 1))
-        self.save_to_db()
-
 
     def parse_categories(self):
         self._driver.get(self.shop_lnk)
@@ -132,12 +133,8 @@ class ATBCrawler(ProductParser):
             id += 1
 
     def parse(self) -> None:
-        '''
-        self.parse_categories()
-        for category in self.categories_list:
-            self.parse_category(category.cat_lnk)
-        '''
-        self.parse_category(economy_link)
+        for c in config.categories:
+            self.parse_category(c["ATB"])
 
 
 if __name__ == "__main__":

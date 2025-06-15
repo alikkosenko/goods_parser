@@ -22,7 +22,6 @@ class DBCursor:
                 price FLOAT,
                 old_price FLOAT,
                 profit INTEGER,
-                weight VARCHAR,
                 lnk VARCHAR,
                 picture_lnk VARCHAR
             )
@@ -32,6 +31,15 @@ class DBCursor:
         self.conn.commit()
 
     def receive_products(self, table_name, product_type=None) -> list[Product]:
+        """
+        :param table_name:
+        :param product_type:
+        :return:
+        """
+        """
+        Написать отдельное формирование строки запроса в зависимости от 
+        получаемых (или не получаемых) аргументов метода.
+        """
         self.cursor.execute(f'''
             SELECT * FROM {table_name} WHERE product_type == {product_type};
         ''' if product_type else f'''SELECT * FROM {table_name};''')
@@ -46,7 +54,6 @@ class DBCursor:
                     price, 
                     old_price, 
                     profit, 
-                    weight, 
                     lnk, 
                     picture_lnk
                     )

@@ -14,5 +14,13 @@ import config
 
 class GCrawler:
     def __init__(self):
-        pass
+        self.SC = SilpoCrawler()
+        self.AC = ATBCrawler()
+        #self.TC = TavriaCrawler()
+        self.Clist = [self.SC, self.AC]
+
+    def crawl(self):
+        for cat in config.categories:
+            for crwl in self.Clist:
+                crwl.parse_category(cat[crwl.name])
 

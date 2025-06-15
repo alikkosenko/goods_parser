@@ -29,6 +29,6 @@ def create_webdriver():
     options.add_argument("--disable-blink-features=AutomationControlled")
 
     service = webdriver.ChromeService(executable_path=binary_path)
-    driver = uc.Chrome(options=options,service=service)# создания драйвера Chrome
+    driver = uc.Chrome(options=options, service=service)  # Cозданиe драйвера Chrome
     driver.implicitly_wait(20)
     return driver
