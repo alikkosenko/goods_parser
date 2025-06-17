@@ -1,0 +1,5 @@
+beautifulsoup4==4.12.3
+requests==2.31.0
+selenium==4.20.0
+undetected-chromedriver==3.5.5
+pyTelegramBotAPI==4.16.1
