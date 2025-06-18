@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
-# Стандартные библиотеки
+#silpo.py
+
+# Standard library
 import logging
 import json
 import os
@@ -8,17 +10,15 @@ from dataclasses import asdict
 from time import sleep, time
 import re
 
-# Бибилиотека bs4
 from bs4 import BeautifulSoup
-
-import config
-# my own modules
-from config import Product, ProductCategory
-from ProductParser import ProductParser
-from WebDriver import create_webdriver
-import DBCursor
-
 from selenium.webdriver.common.by import By
+
+# my own modules
+from goods_parser.config import Product, ProductCategory, shops
+from base import ProductParser
+from webdriver import create_webdriver
+import goods_parser.storage.dbcursor as dbcursor
+
 
 # Настройка logging
 logging.basicConfig(format='[+]%(asctime)s - %(message)s', level=logging.INFO)
@@ -32,19 +32,19 @@ class SilpoCrawler(ProductParser):
     def __init__(self, delay=2, scroll_delay=0.2) -> None:
         super().__init__(delay, scroll_delay)
         self.name = "Silpo"
-        self.shop_lnk = config.shops[self.name]
+        self.shop_lnk = shops[self.name]
         self.categories_list = list()
         self._driver = create_webdriver()
         self.table_name = "Silpo_table"
 
     def save_to_db(self) -> None:
         print(self.products_list)
-        cursor = DBCursor.DBCursor()
+        cursor = dbcursor.DBCursor()
         for product in self.products_list:
             cursor.append_product(self.table_name, product)
         self.products_list.clear()
 
-    def fill_products_list(self, product_category) -> None:
+    def fill_products_list(self, product_category) -> bool:
         soup = BeautifulSoup(self._driver.page_source, 'html.parser')
         products = soup.find_all(class_='product-card')
 
@@ -58,6 +58,7 @@ class SilpoCrawler(ProductParser):
                 price = float(product.find(class_="product-card-price__displayPrice").text[:-4])
             except AttributeError:
                 price = None
+                return False
 
             try:
                 old_price = float(product.find(class_="product-card-price__displayOldPrice").text[:-4])
@@ -66,7 +67,6 @@ class SilpoCrawler(ProductParser):
                 old_price = None
                 profit = None
 
-            #weight = product.find(class_="ft-typo-14-semibold xl:ft-typo-16-semibold").text
             lnk = product["href"]
             picture_lnk = product.find("img")['src']
 
@@ -78,13 +78,13 @@ class SilpoCrawler(ProductParser):
                 price=price,
                 old_price=old_price,
                 profit=profit,
-                #weight=weight
             )
             )
 
         logging.info("Products list is ready")
+        return True
 
-    def parse_page(self, cat_lnk) -> None:
+    def parse_page(self, cat_lnk) -> bool:
         logging.info("Opening {} site...".format(cat_lnk))
         self._driver.get(cat_lnk)
         sleep(self.delay)
@@ -103,8 +103,11 @@ class SilpoCrawler(ProductParser):
 
         logging.info("Page source code is ready")
 
-        self.fill_products_list(product_category=cat_lnk)
-        self.save_to_db()
+        if self.fill_products_list(product_category=cat_lnk):
+            self.save_to_db()
+            return True
+        else:
+            return False
 
     def parse_category(self, cat_lnk) -> None:
         self._driver.get(cat_lnk)
@@ -114,7 +117,8 @@ class SilpoCrawler(ProductParser):
         except Exception:
             num_pages = 5
         for page in range(num_pages):  # number of pages to parse
-            self.parse_page(cat_lnk + "?page={}".format(page + 1))
+            if not self.parse_page(cat_lnk + "?page={}".format(page + 1)):
+                break
 
     def parse_categories(self):
         self._driver.get(self.shop_lnk)

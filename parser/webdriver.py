@@ -14,7 +14,7 @@ from chromedriver_py import binary_path
 import undetected_chromedriver as uc
 
 import config
-
+from time import sleep
 logging.basicConfig(format='[+]%(asctime)s - %(message)s', level=logging.INFO)
 
 
@@ -23,12 +23,25 @@ def create_webdriver():
 
     options = uc.ChromeOptions()
     options.add_argument("--no-sandbox")
+    """
     if config.HEADLESS:
         options.add_argument("--headless")
+    """
     options.add_argument("--window-size=1440,1500")
     options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                         'AppleWebKit/537.36 (KHTML, like Gecko) '
+                         'Chrome/131.0.0.0 Safari/537.36')
 
-    service = webdriver.ChromeService(executable_path=binary_path)
-    driver = uc.Chrome(options=options, service=service)  # Cозданиe драйвера Chrome
+
+    #service = webdriver.ChromeService(executable_path=binary_path)
+    #driver = uc.Chrome(version_main=131, options=options, service=service)  # Cозданиe драйвера Chrome
+    driver = uc.Chrome(version_main=131, options=options)  # Cозданиe драйвера Chrome
     driver.implicitly_wait(20)
     return driver
+
+
+if __name__ == "__main__":
+    driver = create_webdriver()
+    driver.get("https://silpo.ua/category/pyvo-4503")
+    sleep(20)

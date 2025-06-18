@@ -59,13 +59,15 @@ class DBCursor:
                     )
                     VALUES 
                     (
-                    ?,?,?,?,?,?,?,?
+                    ?,?,?,?,?,?,?
                     )'''.format(table_name), tuple(product.__dict__.values()))
         self.conn.commit()
 
 
 if __name__ == "__main__":
     conn = DBCursor()
+    conn.create_table("Silpo_table")
+    conn.create_table("ATB_table")
     p = re.compile("^\n+|\n+$")
     for i in conn.receive_products(table_name="Atb_table"):
         print(re.sub(r"^\n+|\n+$|\n+Закінчується", "", i.name))
