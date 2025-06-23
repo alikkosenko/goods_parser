@@ -55,11 +55,10 @@ class DBCursor:
                     old_price, 
                     profit, 
                     lnk, 
-                    picture_lnk
                     )
                     VALUES 
                     (
-                    ?,?,?,?,?,?,?
+                    ?,?,?,?,?,?
                     )'''.format(table_name), tuple(product.__dict__.values()))
         self.conn.commit()
 

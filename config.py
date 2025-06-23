@@ -11,7 +11,6 @@ class Product:
     old_price: float
     profit: int
     lnk: str
-    picture_lnk: str
 
 
 @dataclass
@@ -24,6 +23,18 @@ shops = {
     "Silpo": "https://silpo.ua/",
     "ATB": "https://www.atbmarket.com/",
     "Tavria": "https://www.tavriav.ua/"
+}
+
+html_classes = {
+    "Silpo": {'card_c': 'product-card', 'name_c': 'product-card__title', 
+              'price_c': 'product-card-price__displayPrice', 
+              'oprice_c': 'product-card-price__displayOldPrice', 
+              'num_c': 'pagination-item ng-star-inserted'},
+    "ATB": {'card_c': 'product-card', 'name_c': 'product-card__title', 
+              'price_c': 'product-card-price__displayPrice', 
+              'oprice_c': 'product-card-price__displayOldPrice', 
+              'href_c': 'href', 'num_c': 'pagination-item ng-star-inserted'},
+
 }
 
 categories = {
