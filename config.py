@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
 HEADLESS = False
-
+delay = 2
+scroll_delay = 0.2
 
 @dataclass
 class Product:
@@ -20,9 +21,9 @@ class ProductCategory:
 
 
 shops = {
-    "Silpo": "https://silpo.ua/",
-    "ATB": "https://www.atbmarket.com/",
-    "Tavria": "https://www.tavriav.ua/"
+    "Silpo": {"url": "https://silpo.ua/", 'table_name': "Silpo_table"},
+    "ATB": {"url": "https://www.atbmarket.com/", 'table_name': "ATB_table"},
+    "Tavria": {"url": "https://www.tavriav.ua/", 'table_name': "Tavria_table"}
 }
 
 html_classes = {

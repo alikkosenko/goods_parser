@@ -9,20 +9,21 @@ from bs4 import BeautifulSoup
 from typing import Any, Dict, List, Optional
 from webdriver import create_webdriver
 
+import goods_parser.config as config
 
 class BaseParser:
     """ Basic parser with common logic """
 
-    def __init__(self, driver_, delay, scroll_delay, shop_url, name, table_name) -> None:
+    def __init__(self, _driver, name, shop_url, table_name) -> None:
         self.products_list = list()
-        self.driver_ = create_webriver()
-        self.delay = delay
-        self.scroll_delay = scroll_delay
-        self.shop_url = shop_url
+        self._driver = create_webdriver()
+        self.delay = config.delay
+        self.scroll_delay = config.scroll_delay
         self.name = name
+        self.shop_url = config.shops[self.name]['url']
         self.table_name = table_name
 
-    def fill_products_list(self, cat_lnk, card_c, name_c, price_c, oprice_c, href_c=None) -> None:
+    def fill_products_list(self, cat_lnk, card_c, name_c, price_c, oprice_c, href_c) -> bool:
         soup = BeautifulSoup(self._driver.page_source, 'html.parser')
         products = soup.find_all(class_=card_c)
 
@@ -37,6 +38,7 @@ class BaseParser:
             except AttributeError:
                 logging.warn("[!!!] Product {} has no price, returning...".format(name))
                 price = None
+                return False
 
             try:
                 old_price = float(product.find(class_=oprice_c).text[:-4])
@@ -44,15 +46,15 @@ class BaseParser:
             except AttributeError:
                 old_price = None
                 profit = None
-            
-            lnk = product.find(class_=href_c)['href'] if href_c else product['href']
 
+            lnk = product[href_c]
             picture_lnk = product.find("img")['src']
 
             self.products_list.append(Product(
                 product_type=product_category,
                 name=str(name),
                 lnk=self.shop_lnk + lnk,
+                picture_lnk=picture_lnk,
                 price=price,
                 old_price=old_price,
                 profit=profit,
@@ -60,6 +62,7 @@ class BaseParser:
             )
 
         logging.info("Products list is ready")
+        return True
 
 
     def parse_page(self, cat_lnk) -> bool:
@@ -81,11 +84,11 @@ class BaseParser:
 
         logging.info("[+] Page source code is ready")
 
-        self.fill_products_list(product_category=cat_lnk)
-        if not self.save_to_db():
-            return False
-        else:
+        if self.fill_products_list(product_category=cat_lnk):
+            self.save_to_db()
             return True
+        else:
+            return False
 
     def parse_category(self, cat_lnk, num_c) -> None:
         self._driver.get(cat_lnk)
@@ -101,8 +104,6 @@ class BaseParser:
     def save_to_db(self) -> None:
         cursor = dbcursor.DBCursor()
         for product in self.products_list:
-            if product.price == None:
-                continue
             cursor.append_product(self.table_name, product)
         self.products_list.clear()
 
