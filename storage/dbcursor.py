@@ -2,7 +2,7 @@
 
 import sqlite3
 
-from config import Product
+from goods_parser.config import Product
 import re
 
 
@@ -22,8 +22,7 @@ class DBCursor:
                 price FLOAT,
                 old_price FLOAT,
                 profit INTEGER,
-                lnk VARCHAR,
-                picture_lnk VARCHAR
+                lnk VARCHAR
             )
         """.format(table_name)
         )
@@ -54,7 +53,7 @@ class DBCursor:
                     price, 
                     old_price, 
                     profit, 
-                    lnk, 
+                    lnk 
                     )
                     VALUES 
                     (

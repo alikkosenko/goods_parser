@@ -13,7 +13,7 @@ from selenium.webdriver.chrome.options import Options
 from chromedriver_py import binary_path
 import undetected_chromedriver as uc
 
-import config
+import goods_parser.config as config
 from time import sleep
 logging.basicConfig(format='[+]%(asctime)s - %(message)s', level=logging.INFO)
 

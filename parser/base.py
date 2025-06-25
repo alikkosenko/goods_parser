@@ -7,54 +7,56 @@ Goods Parser: parent class for every parser
 import logging
 from bs4 import BeautifulSoup
 from typing import Any, Dict, List, Optional
-from webdriver import create_webdriver
+from goods_parser.parser.webdriver import create_webdriver
+from time import sleep
 
 import goods_parser.config as config
+import goods_parser.storage.dbcursor as dbcursor
 
 class BaseParser:
     """ Basic parser with common logic """
 
-    def __init__(self, _driver, name, shop_url, table_name) -> None:
+    def __init__(self, name) -> None:
+        self.name = name
         self.products_list = list()
         self._driver = create_webdriver()
         self.delay = config.delay
         self.scroll_delay = config.scroll_delay
-        self.name = name
         self.shop_url = config.shops[self.name]['url']
-        self.table_name = table_name
+        self.table_name = config.shops[self.name]['table_name'] 
 
-    def fill_products_list(self, cat_lnk, card_c, name_c, price_c, oprice_c, href_c) -> bool:
+    def fill_products_list(self, cat_lnk) -> bool:
         soup = BeautifulSoup(self._driver.page_source, 'html.parser')
-        products = soup.find_all(class_=card_c)
+        products = soup.find_all(class_=config.html_classes[self.name]['card_c'])
 
-        logging.info("[+] We've got {} products from {}".format(len(products), product_category))
+        logging.info("[+] We've got {} products from {}".format(len(products), cat_lnk))
 
         for product in products:
 
-            name = product.find(class_=title_c).text
+            name = product.find(class_=config.html_classes[self.name]['name_c']).text
 
             try:
-                price = float(product.find(class_=price_c).text[:-4])
+                price = float(product.find(class_=config.html_classes[self.name]['price_c']).text[:-4])
             except AttributeError:
                 logging.warn("[!!!] Product {} has no price, returning...".format(name))
                 price = None
                 return False
 
             try:
-                old_price = float(product.find(class_=oprice_c).text[:-4])
+                old_price = float(product.find(class_=config.html_classes[self.name]['oprice_c']).text[:-4])
                 profit = int(100 - price * 100 / old_price)
             except AttributeError:
                 old_price = None
                 profit = None
+            if config.html_classes[self.name]['href_c']:
+                lnk = product.find(class_=config.html_classes[self.name]['href_c'])['href']
+            else:
+                lnk = product['href']
 
-            lnk = product[href_c]
-            picture_lnk = product.find("img")['src']
-
-            self.products_list.append(Product(
-                product_type=product_category,
+            self.products_list.append(config.Product(
+                product_type=cat_lnk,
                 name=str(name),
-                lnk=self.shop_lnk + lnk,
-                picture_lnk=picture_lnk,
+                lnk=self.shop_url + lnk,
                 price=price,
                 old_price=old_price,
                 profit=profit,
@@ -84,7 +86,7 @@ class BaseParser:
 
         logging.info("[+] Page source code is ready")
 
-        if self.fill_products_list(product_category=cat_lnk):
+        if self.fill_products_list(cat_lnk):
             self.save_to_db()
             return True
         else:
@@ -104,8 +106,13 @@ class BaseParser:
     def save_to_db(self) -> None:
         cursor = dbcursor.DBCursor()
         for product in self.products_list:
+            if product.price == None:
+                continue
             cursor.append_product(self.table_name, product)
         self.products_list.clear()
 
     def run(self) -> None:
-        pass
+        for c in config.categories.values():
+            self.parse_category(self.shop_url + c[self.shop_url], config.html_classes[self.name]['num_c'])
+
+
