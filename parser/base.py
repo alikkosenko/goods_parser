@@ -92,15 +92,28 @@ class BaseParser:
         else:
             return False
 
-    def parse_category(self, cat_lnk, num_c) -> None:
-        self._driver.get(cat_lnk)
+    def parse_category(self, cat_lnk) -> None:
+        if cat_lnk[-1] == "&":
+            self._driver.get(cat_lnk[:-1])
+        else:
+            self._driver.get(cat_lnk)
+        sleep(self.delay)
         soup = BeautifulSoup(self._driver.page_source, 'html.parser')
         try:
-            num_pages = int(soup.find(class_=num_c).text)
-        except Exception:
+            num_pages = int(soup.find(class_=config.html_classes[self.name]['num_c']).text)
+            print(num_pages)
+        except Exception as e:
+            print(soup.find(class_=config.html_classes[self.name]['num_c']))
+            print(e)
             num_pages = 5
-        for page in range(num_pages):  # number of pages to parse
-            if not self.parse_page(cat_lnk + "?page={}".format(page + 1)):
+        for pn in range(num_pages):  # number of pages to parse
+            if not pn:
+                page = ""
+            elif cat_lnk[-1] == "&":
+                page = "page={}"
+            else:
+                page = "?page={}"
+            if not self.parse_page(cat_lnk + page.format(pn + 1)):
                 break
 
     def save_to_db(self) -> None:
@@ -112,7 +125,9 @@ class BaseParser:
         self.products_list.clear()
 
     def run(self) -> None:
+        '''
         for c in config.categories.values():
-            self.parse_category(self.shop_url + c[self.shop_url], config.html_classes[self.name]['num_c'])
-
+            self.parse_category(self.shop_url + c[self.shop_url])
+        '''
+        self.parse_category(self.shop_url + config.categories["nuts"][self.shop_url])
 
