@@ -36,7 +36,8 @@ def create_webdriver():
 
     #service = webdriver.ChromeService(executable_path=binary_path)
     #driver = uc.Chrome(version_main=131, options=options, service=service)  # Creating Chrome driver
-    driver = uc.Chrome(version_main=131, options=options)  # Creating Chrome driver
+    #driver = uc.Chrome(version_main=131, options=options)  # Creating Chrome driver
+    driver = uc.Chrome(options=options)
     driver.implicitly_wait(20)
     return driver
 

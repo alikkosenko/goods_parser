@@ -2,9 +2,8 @@
 import os
 
 import telebot
-from SilpoCrawler import SilpoCrawler
-from DBCursor import DBCursor
-import config
+import goods_parser.storage.dbcursor as dbcursor
+import goods_parser.config as config
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 
 bot = telebot.TeleBot("")
@@ -46,7 +45,7 @@ def send_welcome(message):
 
 @bot.message_handler(commands=['beer'])
 def send_beer(message):
-    items = DBCursor().receive_products("https://shop.silpo.ua/category/kovbasni-vyroby-i-m-iasni-delikatesy-4731"
+    items = dbcursor().receive_products("https://shop.silpo.ua/category/kovbasni-vyroby-i-m-iasni-delikatesy-4731"
                                         "?page=1")
     items.sort(key=lambda p: p.profit if p.profit is not None else 0, reverse=True)
     for item in items[:5]:

@@ -23,7 +23,11 @@ class BaseParser:
         self.delay = config.delay
         self.scroll_delay = config.scroll_delay
         self.shop_url = config.shops[self.name]['url']
-        self.table_name = config.shops[self.name]['table_name'] 
+        self.table_name = config.shops[self.name]['table_name']
+        self.curr_cat = None
+
+    def __del__(self):
+        self._driver.quit()
 
     def fill_products_list(self, cat_lnk) -> bool:
         soup = BeautifulSoup(self._driver.page_source, 'html.parser')
